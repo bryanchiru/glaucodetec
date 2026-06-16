@@ -1,0 +1,28 @@
+# Entorno
+.env
+*.env
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Base de datos local
+*.db
+*.sqlite3
+
+# VS Code
+.vscode/
+
+# PyTorch (demasiado grande para GitHub)
+ml/models/glaucodetec_best.pth
+ml/models/training_history.json
+
+# Dataset (no subir imágenes)
+ml/data/
+
+# Imágenes generadas por EDA
+*.png
+
+# Setup script temporal
+setup_glaucodetec.py
