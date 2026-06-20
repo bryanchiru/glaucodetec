@@ -2,11 +2,15 @@
 GlaucoDetec API — FastAPI
 Autenticación JWT + predicción de glaucoma con EfficientNetB0
 """
+import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
@@ -37,6 +41,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Servir frontend como archivos estáticos
+STATIC_DIR = Path(__file__).parent.parent / "static"
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+@app.get("/", include_in_schema=False)
+async def serve_frontend():
+    return FileResponse(str(STATIC_DIR / "index.html"))
 
 # ─── Autenticación ────────────────────────────────────────────────────────────
 
