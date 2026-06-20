@@ -13,7 +13,9 @@ elif _raw.startswith("postgresql://") and "asyncpg" not in _raw:
 else:
     DATABASE_URL = _raw
 
-engine       = create_async_engine(DATABASE_URL, echo=False)
+# PgBouncer (puerto 6543) no soporta prepared statements
+_connect_args = {"prepared_statement_cache_size": 0} if ":6543/" in DATABASE_URL else {}
+engine       = create_async_engine(DATABASE_URL, echo=False, connect_args=_connect_args)
 SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 
 
