@@ -2,8 +2,12 @@ import os
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
-# Vercel usa PostgreSQL (Supabase). Localmente usa SQLite como fallback.
-_raw = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./glaucodetec.db")
+# Neon (Vercel) → NEON_URL, Supabase → DATABASE_URL, local → SQLite
+_raw = (
+    os.getenv("NEON_URL") or
+    os.getenv("DATABASE_URL") or
+    "sqlite+aiosqlite:///./glaucodetec.db"
+)
 
 # Supabase da URLs con prefijo "postgres://" — SQLAlchemy necesita "postgresql+asyncpg://"
 if _raw.startswith("postgres://"):
