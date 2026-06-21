@@ -2,9 +2,10 @@ import os
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
-# Neon (Vercel) → NEON_URL, Supabase → DATABASE_URL, local → SQLite
+# Neon → NEON_POSTGRES_URL_NO_SSL, fallback DATABASE_URL, local → SQLite
 _raw = (
-    os.getenv("NEON_URL") or
+    os.getenv("NEON_POSTGRES_URL_NO_SSL") or
+    os.getenv("NEON_DATABASE_URL") or
     os.getenv("DATABASE_URL") or
     "sqlite+aiosqlite:///./glaucodetec.db"
 )
